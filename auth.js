@@ -1,9 +1,11 @@
 const DNS = require('@google-cloud/dns');
-const projectId = 'hazel-service-519';
 const parseDomain = require('parse-domain')
 
+const projectId = process.env.GCLOUD_PROJECT_ID
 var parsedDomain = parseDomain(process.env.CERTBOT_DOMAIN)
+console.log(parsedDomain)
 var domain = parsedDomain.domain
+console.log(domain)
 
 // Creates a client
 const dns = new DNS({

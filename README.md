@@ -3,7 +3,9 @@ renew a lets encrypt SSL cert using DNS challenge on gcloud managed name server
 
 ## how to run
 
-set some environment variables: 
+set some environment variables:
+
+$GCLOUD_PROJECT_ID - the project id of the gcloud project your dns records are kept
 
 $RENEW_DOMAIN - the domain you want to renew ie) substrait.com
 
