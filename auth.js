@@ -30,9 +30,11 @@ zone.getRecords('txt', function (err, records) {
 
     if (rec.name == challengeName) {
 
+      var newRecords = rec.data.slice(0);
+      newRecords.push(process.env.CERTBOT_VALIDATION);
       var newARecord = zone.record('txt', {
         name: '_acme-challenge.' + process.env.CERTBOT_DOMAIN + '.',
-        data: process.env.CERTBOT_VALIDATION,
+        data: newRecords,
         ttl: 5
       });
 
