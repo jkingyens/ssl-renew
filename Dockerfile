@@ -7,5 +7,6 @@ COPY auth.js /root/
 COPY auth.sh /root/
 COPY renew.sh /root/
 COPY cleanup.js /root/
+RUN mkdir -p /etc/certs
 ENTRYPOINT ["sh"]
 CMD ["renew.sh"]
