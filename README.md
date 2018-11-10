@@ -5,11 +5,11 @@ renew a lets encrypt SSL cert using DNS challenge on gcloud managed name server
 
 set some environment variables:
 
-$GCLOUD_PROJECT_ID - the project id of the gcloud project your dns records are kept
+$GCLOUD_PROJECT_ID - the project id where your cloud DNS records are stored
 
-$RENEW_DOMAIN - the domain you want to renew ie) substrait.com
+$RENEW_DOMAIN - the name of the domain you want to renew ie) substrait.com
 
-$RENEW_EMAIL - the email address passed to lets encrypt to get renew reminders
+$RENEW_EMAIL - the email address to get expire reminders sent to
 
 mount some volumes:
 
