@@ -1,11 +1,9 @@
 const DNS = require('@google-cloud/dns');
 const parseDomain = require('parse-domain')
-
-const projectId = process.env.GCLOUD_PROJECT_ID
-var parsedDomain = parseDomain(process.env.CERTBOT_DOMAIN)
-console.log(parsedDomain)
-var domain = parsedDomain.domain
-console.log(domain)
+const parsedKeyFile = require('/root/dns-admin.json')
+const projectId = parsedKeyFile['project_id']
+const parsedDomain = parseDomain(process.env.CERTBOT_DOMAIN)
+const domain = parsedDomain.domain
 
 // Creates a client
 const dns = new DNS({
