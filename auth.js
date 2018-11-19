@@ -24,48 +24,66 @@ zone.getRecords('txt', function (err, records) {
   }
 
   challengeName = '_acme-challenge.' + process.env.CERTBOT_DOMAIN + '.'
+
+  var foundRec = null;
   records.forEach(function (rec) {
-
     if (rec.name == challengeName) {
+      foundRec = rec;
+    }
+  })
 
-      var newRecords = rec.data.slice(0);
-      newRecords.push(process.env.CERTBOT_VALIDATION);
-      var newARecord = zone.record('txt', {
-        name: '_acme-challenge.' + process.env.CERTBOT_DOMAIN + '.',
-        data: newRecords,
-        ttl: 5
-      });
+  var config = undefined;
+  if (foundRec) {
 
-      var config = {
-        add: newARecord,
-        delete: rec
-      };
+    var newRecords = foundRec.data.slice(0);
+    newRecords.push(process.env.CERTBOT_VALIDATION);
+    var newARecord = zone.record('txt', {
+      name: '_acme-challenge.' + process.env.CERTBOT_DOMAIN + '.',
+      data: newRecords,
+      ttl: 5
+    });
 
-      console.log('setting record');
-      zone.createChange(config, function(err, change, apiResponse) {
+    config = {
+      add: newARecord,
+      delete: foundRec
+    };
 
-        if (err) {
-          return console.error(err);
-        }
+  } else {
 
-        console.log(apiResponse);
-        console.log('record set');
-        console.log ('waiting for propagation');
+    // from scratch?
+    var newARecord = zone.record('txt', {
+      name: '_acme-challenge.' + process.env.CERTBOT_DOMAIN + '.',
+      data: [ process.env.CERTBOT_VALIDATION ],
+      ttl: 5
+    });
 
-        // sleep for some amount of time (60 seconds?)
-        setTimeout(function () {
+    config = {
+      add: newARecord
+    };
 
-          console.log('exiting!');
+  }
 
-          // exit
-          process.exit(0);
+  console.log('setting record');
+  zone.createChange(config, function(err, change, apiResponse) {
 
-        }, 60000)
-
-      });
-
+    if (err) {
+      return console.error(err);
     }
 
-  })
+    console.log(apiResponse);
+    console.log('record set');
+    console.log ('waiting for propagation');
+
+    // sleep for some amount of time (60 seconds?)
+    setTimeout(function () {
+
+      console.log('exiting!');
+
+      // exit
+      process.exit(0);
+
+    }, 60000)
+
+  });
 
 })
